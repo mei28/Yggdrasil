@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  textarea:hover {
+    border-color: #38b2ac; /* teal */
+  }
+
+  pre {
+    font-family: "Fira Code", monospace;
+    letter-spacing: 0.05em;
+  }
+}
