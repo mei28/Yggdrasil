@@ -1,28 +1,50 @@
 import React, { useState } from 'react';
-import TreeComponent from './components/TreeComponent';
+import TextAreaInput from './components/TextAreaInput';
+import ClipboardButton from './components/ClipboardButton';
+import IndentSelector from './components/IndentSelector';
+import AsciiCheckbox from './components/AsciiCheckbox';
+import TreeOutput from './components/TreeOutput';
 import { parseInputToTree } from './utils/parseInputToTree';
+import { treeToText } from './utils/treeToText';
 
 const App: React.FC = () => {
   const [input, setInput] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [useAscii, setUseAscii] = useState(false);
+  const [indentSize, setIndentSize] = useState(4);
 
   const tree = parseInputToTree(input);
+  const treeText = treeToText(tree, '', useAscii);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(treeText).then(
+      () => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      },
+      (err) => console.error('Failed to copy text:', err)
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
       <div className="flex w-full max-w-5xl bg-white shadow-md rounded-lg overflow-hidden border border-gray-200">
         <div className="w-1/2 p-6 flex flex-col">
-          <textarea
-            className="w-full h-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Enter your file structure here..."
-          />
+          <TextAreaInput value={input} onChange={(e) => setInput(e.target.value)} indentSize={indentSize} />
+          <AsciiCheckbox useAscii={useAscii} onToggle={setUseAscii} />
+          <IndentSelector indentSize={indentSize} onChange={setIndentSize} />
         </div>
-        <div className="w-1/2 p-6 bg-gray-100 flex flex-col">
-          <h2 className="text-xl font-semibold mb-4 text-gray-800">Tree Output:</h2>
-          <div className="bg-white p-4 border border-gray-300 rounded-md flex-1 text-sm text-gray-700 overflow-auto">
-            <TreeComponent tree={tree} />
+        <div className="w-1/2 p-6 bg-gray-100 flex flex-col relative">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-gray-800">Tree Output:</h2>
+            <ClipboardButton onCopy={handleCopy} />
           </div>
+          <TreeOutput treeText={treeText} />
+          {copied && (
+            <div className="absolute top-2 right-2 text-gray-600 text-sm">
+              Copied!
+            </div>
+          )}
         </div>
       </div>
     </div>
