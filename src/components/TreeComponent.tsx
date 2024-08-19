@@ -3,9 +3,9 @@ import TreeNodeComponent from './TreeNodeComponent';
 import { TreeNode } from '../utils/parseInputToTree';
 
 const TreeComponent: React.FC<{ tree: TreeNode[] }> = ({ tree }) => (
-  <div>
+  <div className="font-mono">
     {tree.map((node, index) => (
-      <TreeNodeComponent key={index} node={node} />
+      <TreeNodeComponent key={index} node={node} prefix="" />
     ))}
   </div>
 );

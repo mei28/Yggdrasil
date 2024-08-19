@@ -1,6 +1,7 @@
 export type TreeNode = {
   name: string;
   children: TreeNode[];
+  isLast: boolean;
 };
 
 export const parseInputToTree = (input: string): TreeNode[] => {
@@ -8,16 +9,16 @@ export const parseInputToTree = (input: string): TreeNode[] => {
   const root: TreeNode[] = [];
   const stack: { node: TreeNode; indent: number }[] = [];
 
-  lines.forEach((line) => {
+  lines.forEach((line, index) => {
     const indent = line.search(/\S|$/); // find the first non-whitespace character
     const name = line.trim();
+    const isLast = index === lines.length - 1 || lines[index + 1].search(/\S|$/) <= indent;
 
     if (!name) return; // skip empty lines
 
-    const newNode: TreeNode = { name, children: [] };
+    const newNode: TreeNode = { name, children: [], isLast };
 
     if (stack.length === 0 || indent === 0) {
-      // Top level node
       root.push(newNode);
       stack.push({ node: newNode, indent });
     } else {
@@ -35,3 +36,4 @@ export const parseInputToTree = (input: string): TreeNode[] => {
 
   return root;
 };
+

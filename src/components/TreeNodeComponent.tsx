@@ -1,13 +1,19 @@
 import React from 'react';
 import { TreeNode } from '../utils/parseInputToTree';
 
-const TreeNodeComponent: React.FC<{ node: TreeNode }> = ({ node }) => (
-  <div className="ml-4">
-    <div className="font-medium">{node.name}</div>
+const TreeNodeComponent: React.FC<{ node: TreeNode; prefix: string }> = ({ node, prefix }) => (
+  <div>
+    <div>
+      {prefix}{node.isLast ? '└── ' : '├── '}{node.name}
+    </div>
     {node.children.length > 0 && (
-      <div className="pl-4 border-l border-gray-400">
+      <div>
         {node.children.map((child, index) => (
-          <TreeNodeComponent key={index} node={child} />
+          <TreeNodeComponent
+            key={index}
+            node={child}
+            prefix={prefix + (node.isLast ? '    ' : '│   ')}
+          />
         ))}
       </div>
     )}
