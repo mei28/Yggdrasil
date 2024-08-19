@@ -3,7 +3,7 @@ import React from 'react';
 type TextAreaInputProps = {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  indentSize: number; // インデント幅を受け取るプロップスを追加
+  indentSize: number;
 };
 
 const TextAreaInput: React.FC<TextAreaInputProps> = ({ value, onChange, indentSize }) => {
@@ -14,18 +14,16 @@ const TextAreaInput: React.FC<TextAreaInputProps> = ({ value, onChange, indentSi
       const textarea = e.target as HTMLTextAreaElement;
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
-      const indent = ' '.repeat(indentSize); // 指定されたインデント幅を使用
+      const indent = ' '.repeat(indentSize);
 
-      // Set the new value with tab space or dedent
       if (!e.shiftKey) {
         textarea.value = value.substring(0, start) + indent + value.substring(end);
-        textarea.selectionStart = textarea.selectionEnd = start + indentSize; // Move the cursor after the inserted tab
+        textarea.selectionStart = textarea.selectionEnd = start + indentSize;
       } else {
-        // Handle Shift + Tab (dedent)
         const lineStart = value.lastIndexOf('\n', start - 1) + 1;
         if (value.substring(lineStart, lineStart + indentSize) === indent) {
           textarea.value = value.substring(0, lineStart) + value.substring(lineStart + indentSize);
-          textarea.selectionStart = textarea.selectionEnd = start - indentSize; // Move the cursor after the dedented tab
+          textarea.selectionStart = textarea.selectionEnd = start - indentSize;
         }
       }
 
@@ -39,11 +37,18 @@ const TextAreaInput: React.FC<TextAreaInputProps> = ({ value, onChange, indentSi
 
   return (
     <textarea
-      className="font-mono w-full h-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+      className="font-mono w-full h-[20rem] p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
       value={value}
       onChange={onChange}
-      onKeyDown={handleKeyDown} // Add keydown handler for TAB key
-      placeholder="Enter your file structure here..."
+      onKeyDown={handleKeyDown}
+      placeholder={`Plaease enter your file structure here...
+---
+folder1
+  file1.txt
+  file2.txt
+folder2
+  folder3
+    file3.txt`}
     />
   );
 };
