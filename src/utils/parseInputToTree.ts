@@ -1,22 +1,18 @@
 export type TreeNode = {
   name: string;
   children: TreeNode[];
-  isLast: boolean;
 };
 
 export const parseInputToTree = (input: string): TreeNode[] => {
-  const lines = input.split('\n');
+  const lines = input.split('\n').filter(line => line.trim() !== '');
   const root: TreeNode[] = [];
   const stack: { node: TreeNode; indent: number }[] = [];
 
   lines.forEach((line, index) => {
-    const indent = line.search(/\S|$/); // find the first non-whitespace character
+    const indent = line.search(/\S|$/); // Find the first non-whitespace character
     const name = line.trim();
-    const isLast = index === lines.length - 1 || lines[index + 1].search(/\S|$/) <= indent;
 
-    if (!name) return; // skip empty lines
-
-    const newNode: TreeNode = { name, children: [], isLast };
+    const newNode: TreeNode = { name, children: [] };
 
     if (stack.length === 0 || indent === 0) {
       root.push(newNode);
