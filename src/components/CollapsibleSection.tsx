@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 
 type CollapsibleSectionProps = {
   title: string;
@@ -15,8 +16,8 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({ title, children
         onClick={() => setIsOpen(!isOpen)}
       >
         {title}
-        <span className={`ml-2 transform ${isOpen ? 'rotate-180' : 'rotate-0'}`}>
-          {isOpen ? '▲' : '▼'}
+        <span className="ml-2">
+          {isOpen ? <FiChevronUp /> : <FiChevronDown />}
         </span>
       </button>
       {isOpen && <div className="mt-2 text-gray-700">{children}</div>}
