@@ -8,7 +8,7 @@ export const parseInputToTree = (input: string): TreeNode[] => {
   const root: TreeNode[] = [];
   const stack: { node: TreeNode; indent: number }[] = [];
 
-  lines.forEach((line, index) => {
+  lines.forEach(line => {
     const indent = line.search(/\S|$/); // Find the first non-whitespace character
     const name = line.trim();
 
